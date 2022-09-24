@@ -1,0 +1,18 @@
+{
+  "devDependencies": {
+    "typescript": "^4.8.3",
+    "ts-node": "10.7.0",
+    "@types/node": "^16.11.10"
+  },
+  "dependencies": {
+    "@types/node": "^18.7.19",
+    "pg": "^8.8.0",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.10",
+    "mysql": "^2.14.1"
+  },
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "typeorm": "typeorm-ts-node-commonjs"
+ }
+}
