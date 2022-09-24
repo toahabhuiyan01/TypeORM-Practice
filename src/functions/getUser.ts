@@ -12,19 +12,19 @@ const handler: GetUser = async (
 ) => {
     let qb = db
         .getRepository(User)
-        .createQueryBuilder('users')
-        .orderBy('id', 'DESC')
+        .createQueryBuilder('user')
+        .orderBy('user_id', 'DESC')
     if(id) {
-        qb = qb.andWhere('id = :id', { id })
+        qb = qb.andWhere('user_id = :id', { id })
     }
 
     if(before) {
-		qb = qb.andWhere('id < :before', { before })
+		qb = qb.andWhere('user_id < :before', { before })
 	}
 
     if(searchString) {
 		qb = qb.andWhere(
-			'LOWER(name) LIKE :searchString',
+			'LOWER(user_name) LIKE :searchString',
 			{ searchString: `%${searchString.toLocaleLowerCase()}%` })
 	}
 
