@@ -4,9 +4,10 @@ import { User } from "../entity/User";
 export default async (db: DataSource) => {
     const userRepo = db.getRepository(User)
     const user = new User()
-    user.apiKey = "adssfd"
-    await db.manager.save(user)
+    user.apiKey = "f73d694e-e8f9-48d2-88c6-598dfb1709bc"
+    user.name = 'Tanzel Bhuiyan'
 
-    const users = await db.manager.find(User)
-    console.log("Loaded users: ", users)
+    const createdUser = await userRepo.save(user)
+
+    console.log("Loaded users: ", createdUser)
 }

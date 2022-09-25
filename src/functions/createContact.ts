@@ -10,16 +10,22 @@ type CreateContact = (
 
 const handler: CreateContact = async ({ db }, { name, phoneNumber, email, owner }) => {
     const contactRepo = db.getRepository(Contact)
-    const contactOwner = await getUser({ db }, { id: owner}).users[0] as User
+    const userRepo = db.getRepository(User)
+
+    const contactOwner = await userRepo.findOneBy({id: owner})
     
     const contact = new Contact()
     contact.name = name
     contact.phoneNumber = phoneNumber
     contact.email = email
 
-    contact.owner = contactOwner
+    if(contactOwner) {
+        contact.owner = contactOwner
+    } else {
+        throw new Error('No user Found')
+    }
 
-    await contactRepo.save(contact)
+    return await contactRepo.save(contact)
 }
 
 export default handler

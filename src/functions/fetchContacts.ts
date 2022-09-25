@@ -1,21 +1,29 @@
 import { DataSource } from "typeorm"
+import { Contact } from "../entity/Contact"
 import { User } from "../entity/User"
 
-type GetUser = (
+type GetContact = (
 	conn: { db: DataSource },
 	ev: any,
 ) => any
 
-const handler: GetUser = async (
+const handler: GetContact = async (
     { db }, 
-    { searchString, id, before, count }
+    { searchString, id, before, count, owner, isAdmin }
 ) => {
+    if(!owner && !isAdmin) {
+        throw new Error('No Owner!!')
+    }
     let qb = db
-        .getRepository(User)
-        .createQueryBuilder('user')
-        .orderBy('id', 'DESC')
+        .getRepository(Contact)
+        .createQueryBuilder('contact')
+        .orderBy('contact_id', 'DESC')
     if(id) {
         qb = qb.andWhere('id = :id', { id })
+    }
+
+    if(owner) {
+        qb = qb.andWhere('owner_id = :owner', { owner })
     }
 
     if(before) {
@@ -35,7 +43,7 @@ const handler: GetUser = async (
     const result = await qb.getRawMany()
 
 	const cursor = result[result.length - 1]?.id
-	return { users: result, cursor }
+	return { contacts: result, cursor }
 }
 
 export default handler
