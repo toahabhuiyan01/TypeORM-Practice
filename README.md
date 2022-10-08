@@ -7,5 +7,5 @@ Steps to run this project:
 3. Run `npm start` command
 
 Steps to migration:
-1. Run `npm run generate ./src/migration/{migration_name}` to create a migration.
+1. Run `npm run gen-mig ./src/migration/{migration_name}` to create a migration.
 2. Run `npm run run-mig` to run the migration.

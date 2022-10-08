@@ -32,6 +32,14 @@ const handler: GetUser = async (
 		qb = qb.limit(count)
 	}
 
+    // qb = qb.where('user_meta ::json @> :user_user_meta', {
+    //     user_user_meta: {
+    //         status: 'confirmed'
+    //     }
+    // })
+
+    qb = qb.where(`user_meta->>'status' IN (:...state)`, {state: ["confirmed", 'pending']})
+
     const result = await qb.getRawMany()
 
 	const cursor = result[result.length - 1]?.id

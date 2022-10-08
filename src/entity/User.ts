@@ -16,6 +16,9 @@ export class User {
     @Column({ nullable: false, default: ''})
     token!: string
 
+    @Column({ name: 'user_meta', type: 'json', nullable: true })
+    userMeta!: { [k: string]: string | number }
+
     @OneToMany(() => Contact, ({ owner }) => owner )
     contacts!: Contact[]
 

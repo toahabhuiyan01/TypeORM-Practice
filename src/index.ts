@@ -11,8 +11,8 @@ import fetchContacts from './functions/fetchContacts'
 
     // const users = await userFetch({ db: AppDataSource }, { before: 0 })
     // const users = await userCreate(AppDataSource)
-    // const users = await userFetch({ db: AppDataSource }, {})
-    // console.log(users)
+    const users = await userFetch({ db: AppDataSource }, {})
+    console.log(JSON.stringify(users, null, 2))
 
     const contactCreate = {
         name: 'toaha',
@@ -20,6 +20,6 @@ import fetchContacts from './functions/fetchContacts'
         email: 'mmtanzel420@gmail.com'
     }
     // const contacts = await createContact( { db: AppDataSource }, { owner: 2, ...contactCreate })
-    const contacts = await fetchContacts({ db: AppDataSource }, { owner: 1 })
-    console.log(contacts)
+    // const contacts = await fetchContacts({ db: AppDataSource }, { owner: 1 })
+    // console.log(contacts)
 })()
