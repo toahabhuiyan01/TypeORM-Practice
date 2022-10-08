@@ -20,6 +20,6 @@ import fetchContacts from './functions/fetchContacts'
         email: 'mmtanzel420@gmail.com'
     }
     // const contacts = await createContact( { db: AppDataSource }, { owner: 2, ...contactCreate })
-    const contacts = await fetchContacts({ db: AppDataSource }, { })
+    const contacts = await fetchContacts({ db: AppDataSource }, { owner: 1 })
     console.log(contacts)
 })()
