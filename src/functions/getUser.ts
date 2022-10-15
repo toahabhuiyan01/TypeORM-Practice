@@ -8,12 +8,15 @@ type GetUser = (
 
 const handler: GetUser = async (
     { db }, 
-    { searchString, id, before, count }
+    { searchString, id, before, count, startTime, endTime, status }
 ) => {
     let qb = db
         .getRepository(User)
         .createQueryBuilder('user')
-        .orderBy('id', 'DESC')
+        // .orderBy(`user_meta->>'date'`, 'DESC')
+        // .orderBy('name', 'ASC')
+        
+
     if(id) {
         qb = qb.andWhere('id = :id', { id })
     }
@@ -32,15 +35,20 @@ const handler: GetUser = async (
 		qb = qb.limit(count)
 	}
 
-    // qb = qb.where('user_meta ::json @> :user_user_meta', {
-    //     user_user_meta: {
-    //         status: 'confirmed'
-    //     }
-    // })
+    if(startTime && endTime) {
+        qb = qb
+        .andWhere(`user_meta->>'date' > :startTime`, { startTime })
+        .andWhere(`user_meta->>'date' < :endTime`, { endTime })
+    }
 
-    qb = qb.where(`user_meta->>'status' IN (:...state)`, {state: ["confirmed", 'pending']})
+    if(Array.isArray(status)) {
+        qb = qb.andWhere(`user_meta->>'status' IN (:...status)`, { status })
+    }
 
-    const result = await qb.getRawMany()
+    // qb.skip(2).take(2)
+    // qb.offset(0).limit(5)
+
+    const result = await qb.getMany()
 
 	const cursor = result[result.length - 1]?.id
 	return { users: result, cursor }

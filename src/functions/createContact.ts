@@ -8,7 +8,7 @@ type CreateContact = (
 	ev: any,
 ) => any
 
-const handler: CreateContact = async ({ db }, { name, phoneNumber, email, owner }) => {
+const handler: CreateContact = async ({ db }, { name, phoneNumber, email, owner, metaData }) => {
     const contactRepo = db.getRepository(Contact)
     const userRepo = db.getRepository(User)
 
@@ -18,6 +18,7 @@ const handler: CreateContact = async ({ db }, { name, phoneNumber, email, owner 
     contact.name = name
     contact.phoneNumber = phoneNumber
     contact.email = email
+    contact.metaData = metaData
 
     if(contactOwner) {
         contact.owner = contactOwner

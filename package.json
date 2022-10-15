@@ -15,6 +15,7 @@
     "start": "ts-node src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs",
     "gen-mig": "ts-node ./node_modules/typeorm/cli.js migration:generate -d src/data-source.ts",
-    "run-mig": "ts-node ./node_modules/typeorm/cli.js migration:run -d src/data-source.ts"
+    "run-mig": "ts-node ./node_modules/typeorm/cli.js migration:run -d src/data-source.ts",
+    "creat-mig": "typeorm migration:create"
  }
 }

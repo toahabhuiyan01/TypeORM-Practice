@@ -11,13 +11,16 @@ const handler: GetContact = async (
     { db }, 
     { searchString, id, before, count, owner, isAdmin }
 ) => {
-    if(!owner && !isAdmin) {
-        throw new Error('No Owner!!')
-    }
+    // if(!owner && !isAdmin) {
+    //     throw new Error('No Owner!!')
+    // }
     let qb = db
         .getRepository(Contact)
         .createQueryBuilder('contact')
-        .orderBy('contact_id', 'DESC')
+        .orderBy(`id`, 'ASC')
+        .andWhere("meta_data->>'date' IS null")
+        .andWhere("id > :uId", { uId: 1})
+
     if(id) {
         qb = qb.andWhere('id = :id', { id })
     }
@@ -40,7 +43,7 @@ const handler: GetContact = async (
 		qb = qb.limit(count)
 	}
 
-    const result = await qb.getRawMany()
+    const result = await qb.getMany()
 
 	const cursor = result[result.length - 1]?.id
 	return { contacts: result, cursor }
