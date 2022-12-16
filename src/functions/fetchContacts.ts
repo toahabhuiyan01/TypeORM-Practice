@@ -18,12 +18,33 @@ const handler: GetContact = async (
         .getRepository(Contact)
         .createQueryBuilder('contact')
         .orderBy(`id`, 'ASC')
-        .andWhere("meta_data->>'date' IS null")
+        .andWhere("meta_data->>'address' IS NOT null")
         .andWhere("id > :uId", { uId: 1})
 
     if(id) {
         qb = qb.andWhere('id = :id', { id })
     }
+
+    const arr = [
+        {ph: '8801626711768', id: '2'},
+        {ph: '8801626711770', id: '5'}
+    ]
+
+    const bal = arr.reduce((fArr: string[], curr) => {
+        fArr.push(`('${curr.ph}', '${curr.id}')`)
+        return fArr
+    }, [])
+
+    qb = qb.andWhere(`(phone_number, owner_id) IN (${bal.join(', ')})`)
+
+    // for(let idx = 0; idx < arr.length; idx++) {
+    //     const value = arr[idx]
+    //     if(idx === 0) {
+    //         qb = qb.andWhere(`phone_number='${value.ph}' AND owner_id=${value.id}`)
+    //     } else {
+    //         qb = qb.orWhere(`phone_number='${value.ph}' AND owner_id=${value.id}`)
+    //     }
+    // }
 
     if(owner) {
         qb = qb.andWhere('owner_id = :owner', { owner })
@@ -43,7 +64,7 @@ const handler: GetContact = async (
 		qb = qb.limit(count)
 	}
 
-    const result = await qb.getMany()
+    const result = await qb.getRawMany()
 
 	const cursor = result[result.length - 1]?.id
 	return { contacts: result, cursor }

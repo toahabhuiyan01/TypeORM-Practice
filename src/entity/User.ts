@@ -10,6 +10,9 @@ export class User {
     @Column()
     name!: string
 
+    @Column("text", { array: true, default: [] })
+    tags!: string[]
+
     @Column({name: 'api_key', nullable: false, default: ''})
     apiKey!: string
 

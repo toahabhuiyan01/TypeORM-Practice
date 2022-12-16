@@ -13,6 +13,7 @@ const handler: GetUser = async (
     let qb = db
         .getRepository(User)
         .createQueryBuilder('user')
+        // .where(`tags @> :tags`, {tags: []})
         // .orderBy(`user_meta->>'date'`, 'DESC')
         // .orderBy('name', 'ASC')
         

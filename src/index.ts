@@ -10,10 +10,11 @@ import { Contact } from "./entity/Contact"
         await AppDataSource.initialize()
     }
 
-    // const users = await userFetch({ db: AppDataSource }, {})
+    const users = await userFetch({ db: AppDataSource }, { status: ['start']})
     // const users = await userCreate(AppDataSource)
-    // const users = await userFetch({ db: AppDataSource }, { startTime: '2022-10-08T07:00:28.841Z', endTime: '2022-10-08T08:03:36.685Z' })
-    // console.log(JSON.stringify(users, null, 2))
+    // const users = await userFetch({ db: AppDataSource }, { id: 7 })
+    // console.log(users.users[0])
+    console.log(JSON.stringify(users, null, 2))
 
     const contactCreate = {
         name: 'tahmid',
@@ -25,10 +26,10 @@ import { Contact } from "./entity/Contact"
             serial: 7
         }
     }
-    // const contacts = await createContact( { db: AppDataSource }, { owner: 2, ...contactCreate })
-    const contacts: {contacts: Contact[], cursor: string } = await fetchContacts({ db: AppDataSource }, { })
+    // const contacts = await createContact( { db: AppDataSource }, { owner: 5, ...contactCreate })
+    // const contacts: {contacts: Contact[], cursor: string } = await fetchContacts({ db: AppDataSource }, { })
     // contacts.contacts.map(contact => {
     //     console.log(contact.metaData?.date)
     // })
-    console.log(contacts)
+    // console.log(JSON.stringify(contacts, null, 4))
 })()
