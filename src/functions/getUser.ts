@@ -1,4 +1,4 @@
-import { DataSource } from "typeorm"
+import { Brackets, DataSource } from "typeorm"
 import { User } from "../entity/User"
 
 type GetUser = (
@@ -8,12 +8,12 @@ type GetUser = (
 
 const handler: GetUser = async (
     { db }, 
-    { searchString, id, before, count, startTime, endTime, status }
+    { searchString, id, before, count, startTime, endTime, status, tag }
 ) => {
     let qb = db
         .getRepository(User)
         .createQueryBuilder('user')
-        // .where(`tags @> :tags`, {tags: []})
+        .orderBy('id', 'DESC')
         // .orderBy(`user_meta->>'date'`, 'DESC')
         // .orderBy('name', 'ASC')
         
@@ -43,7 +43,15 @@ const handler: GetUser = async (
     }
 
     if(Array.isArray(status)) {
+        // search on a json data column
         qb = qb.andWhere(`user_meta->>'status' IN (:...status)`, { status })
+    }
+
+    if(Array.isArray(tag)) {
+        // search on a array by comparing those array.
+        qb = qb.andWhere('tags @> :tags', { tags: tag })
+    } else if(typeof tag !== 'undefined') {
+        qb = qb.andWhere(`:tag = ANY(tag)`, { tag })
     }
 
     // qb.skip(2).take(2)
